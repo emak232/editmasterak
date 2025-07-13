@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>EDIT MASTER AK</title>
-  <link rel="icon" type="image/png" href="/static/logo.png"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <style>
     :root {
       --bg-dark: #0a0f3c;
@@ -15,16 +15,57 @@
       --line-color-light: rgba(0, 0, 0, 0.3);
     }
 
-    body {
+    html, body {
+      height: 100%;
       margin: 0;
+      padding: 0;
+    }
+
+    html {
+      overflow-y: scroll; /* Ensures consistent vertical scrollbar */
+    }
+
+    body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: var(--bg-dark);
       color: var(--text-dark);
-      transition: all 0.5s ease-in-out;
+      transition: all 0.6s ease-in-out;
       animation: fadeIn 1.2s ease-in-out;
       overflow-x: hidden;
       position: relative;
-      will-change: background, color;
+      cursor: none;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      transition: opacity 0.4s ease, background 0.4s ease;
+    }
+
+    body:not(.light-mode)::before {
+      background: linear-gradient(-45deg, #2b1055, #400082, #1e1558, #310062);
+      background-size: 400% 400%;
+      animation: gradientBG 20s ease infinite;
+      opacity: 0.4;
+    }
+
+    body.light-mode::before {
+      background: linear-gradient(to bottom right, #cceeff, #66aaff);
+      background-size: cover;
+      animation: none;
+      opacity: 1;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     @keyframes fadeIn {
@@ -32,18 +73,31 @@
       100% { opacity: 1; transform: translateY(0); }
     }
 
+    @keyframes fadeOutSmooth {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
     header {
       padding: 20px;
       text-align: center;
       background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(5px);
       border-bottom: 1px solid rgba(255,255,255,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
-    h1 {
+     h1 {
       font-size: 2.5rem;
       margin: 10px 0;
-      transition: color 0.4s ease-in-out;
+      display: inline-block;
+      position: relative;
     }
 
     .header-line {
@@ -51,7 +105,6 @@
       background-color: var(--line-color-dark);
       width: 80%;
       margin: 10px auto;
-      transition: background-color 0.4s ease;
     }
 
     .light-mode .header-line {
@@ -59,16 +112,16 @@
     }
 
     p {
-      font-size: 1.2rem;
+      font-size: 1rem;
       margin: 20px auto;
       max-width: 800px;
       line-height: 1.6;
-      transition: color 0.4s ease-in-out;
     }
 
     .social {
       text-align: center;
       margin-top: 30px;
+      padding-bottom: 100px;
     }
 
     .social a {
@@ -77,21 +130,16 @@
       color: inherit;
       text-decoration: none;
       font-weight: 500;
-      padding: 10px 20px;
+      padding: 12px 25px;
       border-radius: 30px;
       background: rgba(255,255,255,0.1);
-      transition: transform 0.35s ease-in-out, background 0.35s ease-in-out;
-      will-change: transform, background;
+      transition: all 0.7s ease;
+      cursor: none;
     }
 
     .social a:hover {
       transform: scale(1.07);
       background: rgba(255,255,255,0.2);
-    }
-
-    @media (max-width: 768px) {
-      h1 { font-size: 2rem; }
-      p { font-size: 1rem; padding: 0 10px; }
     }
 
     .menu-btn {
@@ -102,10 +150,10 @@
       border: 2.5px solid currentColor;
       padding: 14px;
       border-radius: 12px;
-      cursor: pointer;
       z-index: 1100;
       color: white;
       transition: border-color 0.3s ease;
+      cursor: none;
     }
 
     .light-mode .menu-btn {
@@ -118,9 +166,7 @@
       background: currentColor;
       display: block;
       margin: 6px 0;
-      transition: transform 0.4s ease-in-out, background 0.4s ease-in-out;
       border-radius: 2px;
-      will-change: transform, background;
     }
 
     .sidebar {
@@ -134,9 +180,8 @@
       border-radius: 0 12px 12px 0;
       color: #fff;
       z-index: 1000;
-      transition: left 0.45s ease-in-out;
+      transition: left 0.4s ease;
       box-shadow: 2px 0 8px rgba(0, 0, 0, 0.4);
-      will-change: left;
     }
 
     .sidebar.active {
@@ -147,7 +192,6 @@
       display: block;
       margin-bottom: 20px;
       font-size: 1.2rem;
-      transition: color 0.4s ease-in-out;
     }
 
     .toggle-btn {
@@ -157,9 +201,9 @@
       padding: 10px 18px;
       border: none;
       border-radius: 8px;
-      cursor: pointer;
+      cursor: none;
       font-size: 1rem;
-      transition: background 0.4s ease-in-out;
+      transition: background 0.3s ease;
     }
 
     .toggle-btn:hover {
@@ -186,6 +230,30 @@
       background: #1c1c1c;
     }
 
+    .cursor {
+      position: fixed;
+      left: 0;
+      top: 0;
+      pointer-events: none;
+      font-size: 2.5rem;
+      color: white;
+      user-select: none;
+      z-index: 10000;
+      transform: translate(-50%, -50%);
+      animation: pulsing 1.6s ease-in-out infinite;
+      transition: transform 0.05s ease-in-out;
+    }
+
+    body.light-mode .cursor {
+      color: black;
+    }
+
+    @keyframes pulsing {
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
+      50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
+    }
+
     .page-ripple {
       position: absolute;
       border-radius: 50%;
@@ -193,7 +261,6 @@
       transform: scale(0);
       animation: ripple-global 0.8s ease-out;
       z-index: 9999;
-      will-change: transform, opacity;
     }
 
     @keyframes ripple-global {
@@ -202,28 +269,92 @@
         opacity: 0;
       }
     }
+
+    .star {
+      position: absolute;
+      font-size: 1.6rem;
+      top: 50%;
+      transform: translateY(-50%);
+      animation: pulsing 2s ease-in-out infinite;
+      z-index: 50;
+      font-weight: bold;
+      user-select: none;
+    }
+
+    .star-left { left: -30px; }
+    .star-right { right: -50px; }
+
+    body.light-mode .star { color: black; }
+    body:not(.light-mode) .star { color: white; }
+
+    footer {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--text-dark);
+      font-size: 0.9rem;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .footer-text {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: revealLeftRight 2.5s ease forwards, fadeOutSmooth 1s ease forwards;
+  animation-delay: 0s, 6s; /* Reveal starts immediately, fade starts after 5s */
+  border-right: 1px solid transparent;
+}
+
+    @keyframes revealLeftRight {
+      from {
+        width: 0;
+      }
+      to {
+        width: 100%;
+      }
+    }
+
+    body.light-mode footer {
+      color: black;
+    }
   </style>
 </head>
+<audio id="clickSound" src="/static/click-sound.mp3" preload="auto"></audio>
 <body>
   <header>
-    <h1>WELCOME TO EDIT MASTER AK</h1>
+    <h1><span class="star star-left">★</span>WELCOME TO EDIT MASTER AK<span class="star star-right">★</span></h1>
     <div class="header-line"></div>
   </header>
   <main>
     <p>
-      Hi, I'm AK! If you're passionate about watching finely edited videos of Gaming,
-      Cars, AI-based, Music, and some Tech videos, you've come to the right place.
-      Join our community by subscribing and turning on notifications. Thank you!
+  Hi, I'm AK! If you're passionate about watching finely edited videos of Gaming, Cars, AI-based, Music, and some Tech videos, you've come to the right place.<br>
+  On my youtube channel, you will find all. Join our community by subscribing and turning on notifications.<br>
+  Thank you.<br><br>
+  • Instagram Id: editmaster.ak232 🅾<br>
+  • Facebook Id: EM AK ⓕ<br>
+  • Discord Id: editmaster_ak232 (o‿o⁠)<br>
+  • Roblox Id: @PROAK232 ⟐<br>
+  • Snap Chat Id: em-ak232 Ω<br>
+  • Chikii Id: 10477399 (◠▿◠)<br>
+  • Reddit Id: EDITMASTERAK ʕ•ᴥ•ʔ<br>
+  • GitHub Id: emak232<br>
+  • X Id: editmasterak 𝕏<br>
+  • Telegram Id: @editmasterak ➤
     </p>
     <div class="social">
       <a href="https://instagram.com/editmaster.ak232" target="_blank">Instagram</a>
       <a href="https://facebook.com/profile.php?id=61564333629360" target="_blank">Facebook</a>
-      <a href="https://discordapp.com/users/1255101787422068827" target="_blank">Discord</a>
+      <a href="https://discord.com/users/1255101787422068827" target="_blank">Discord</a>
+      <a href="https://youtube.com/@EDITMASTERAK" target="_blank">YouTube</a>
       <a href="https://roblox.com/users/7492546253/profile" target="_blank">Roblox</a>
-      <a href="https://snapchat.com/add/em-ak232" target="_blank">Snapchat</a>
-      <a href="https://chikiigame.com/m/chikiiwebprod/index.html" target="_blank">Chikii</a>
+      <a href="https://t.me/editmasterak" target="_blank">Telegram</a>
+      <a href="https://github.com/emak232" target="_blank">Github</a>
     </div>
   </main>
+
+  <footer><span class="footer-text">© EDIT MASTER AK | All Rights Reserved.</span></footer>
 
   <button class="menu-btn" onclick="toggleSidebar()">
     <span class="menu-icon"></span>
@@ -236,31 +367,72 @@
     <button id="toggleModeBtn" class="toggle-btn" onclick="toggleDarkMode()">Toggle Light Mode</button>
   </div>
 
+  <div class="cursor" id="cursor">✦</div>
+
   <script>
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      sidebar.classList.toggle('active');
-    }
+const clickSound = document.getElementById('clickSound');
 
-    function toggleDarkMode() {
-      const body = document.body;
-      const toggleBtn = document.getElementById('toggleModeBtn');
-      body.classList.toggle('light-mode');
-      toggleBtn.textContent = body.classList.contains('light-mode') ? "Toggle Dark Mode" : "Toggle Light Mode";
-    }
+document.addEventListener('click', function() {
+  if (clickSound) {
+    clickSound.currentTime = 0; // Reset to start
+    clickSound.play();
+  }
+});
 
-    document.addEventListener('click', function(e) {
-      const ripple = document.createElement('div');
-      ripple.className = 'page-ripple';
-      const isLight = document.body.classList.contains('light-mode');
-      ripple.style.background = isLight ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.4)';
-      const size = 40;
-      ripple.style.width = ripple.style.height = size + 'px';
-      ripple.style.left = (e.clientX - size / 2) + 'px';
-      ripple.style.top = (e.clientY - size / 2) + 'px';
-      document.body.appendChild(ripple);
-      setTimeout(() => ripple.remove(), 800);
-    });
-  </script>
+  const cursor = document.getElementById('cursor');
+let currentX = 0, currentY = 0;
+let targetX = 0, targetY = 0;
+
+document.addEventListener('mousemove', (e) => {
+  targetX = e.clientX;
+  targetY = e.clientY;
+});
+
+function updateCursor() {
+  // Move gradually: adjust "0.15" for more or less smoothness
+  currentX += (targetX - currentX) * 0.15;
+  currentY += (targetY - currentY) * 0.15;
+
+  cursor.style.left = currentX + 'px';
+  cursor.style.top = currentY + 'px';
+  requestAnimationFrame(updateCursor);
+}
+
+updateCursor();
+
+  document.addEventListener('click', function(e) {
+    const ripple = document.createElement('div');
+    ripple.className = 'page-ripple';
+    const isLight = document.body.classList.contains('light-mode');
+    ripple.style.background = isLight ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.4)';
+    const size = 40;
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = (e.clientX - size / 2) + 'px';
+    ripple.style.top = (e.clientY - size / 2) + 'px';
+    document.body.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 800);
+  });
+
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('active');
+  }
+
+  function toggleDarkMode() {
+    const body = document.body;
+    const toggleBtn = document.getElementById('toggleModeBtn');
+    body.classList.toggle('light-mode');
+    toggleBtn.textContent = body.classList.contains('light-mode') ? "Toggle Dark Mode" : "Toggle Light Mode";
+  }
+
+  // 🔥 Keyboard Shortcuts: Esc for menu, T for light/dark toggle
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      toggleSidebar();
+    } else if (e.key.toLowerCase() === 't') {
+      toggleDarkMode();
+    }
+  });
+</script>
+<script src="{{ url_for('static', filename='style.js') }}"></script>
 </body>
 </html>
