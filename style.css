@@ -1,0 +1,94 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #0a0f3c, #3b0a47);
+  color: #fff;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.dark-mode {
+  background: linear-gradient(135deg, #121212, #1e1e1e);
+  color: #fff;
+}
+
+header nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.menu-toggle {
+  font-size: 1.8rem;
+  cursor: pointer;
+  display: none;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+nav ul li {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+nav ul li:hover {
+  transform: scale(1.1);
+}
+
+.intro {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.social ul {
+  list-style: none;
+  padding: 0;
+  text-align: center;
+}
+
+.social ul li {
+  margin: 10px 0;
+}
+
+.social ul li a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+}
+
+/* 🔥 Ripple Effect Anywhere on Page */
+.page-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+  transform: scale(0);
+  animation: ripple-global 0.8s ease-out;
+  z-index: 9999;
+}
+
+@keyframes ripple-global {
+  to {
+    transform: scale(6);
+    opacity: 0;
+  }
+}
