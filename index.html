@@ -453,8 +453,8 @@ body::-webkit-scrollbar {
 }
   </style>
 </head>
-<audio id="clickSound" src="https://emak232.github.io/editmasterak/click-sound.mp3" preload="auto"></audio>
 <body>
+  <audio id="clickSound" src="https://emak232.github.io/editmasterak/click-sound.mp3" preload="auto"></audio>
   <header>
     <h1><span class="star star-left">★</span>WELCOME TO EDIT MASTER AK<span class="star star-right">★</span></h1>
     <div class="header-line"></div>
@@ -502,15 +502,6 @@ body::-webkit-scrollbar {
   <div class="cursor" id="cursor">✦</div>
 
   <script>
-const clickSound = document.getElementById('clicksound');
-
-document.addEventListener('click', function() {
-  if (clickSound) {
-    clickSound.currentTime = 0; // Reset to start
-    clickSound.play();
-  }
-});
-
   const cursor = document.getElementById('cursor');
 let currentX = 0, currentY = 0;
 let targetX = 0, targetY = 0;
@@ -562,6 +553,18 @@ updateCursor();
       toggleSidebar();
     } else if (e.key.toLowerCase() === 't') {
       toggleDarkMode();
+    }
+  });
+    
+  const clickSound = document.getElementById('clickSound');
+
+  document.addEventListener('click', function () {
+    if (clickSound) {
+      clickSound.currentTime = 0; // rewind to start
+      clickSound.play().catch(e => {
+        // Autoplay restrictions (usually on first user interaction)
+        console.warn('Playback blocked:', e);
+      });
     }
   });
 </script>
