@@ -13,44 +13,7 @@
   <title>EDIT MASTER AK</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <style>
-.time-display {
-  position: fixed;
-  top: 10px;
-  right: 12px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--text-dark);
-  background: rgba(255, 255, 255, 0.05);
-  padding: 4px 10px;
-  border-radius: 12px;
-  backdrop-filter: blur(4px);
-  transition: all 0.4s ease-in-out;
-  animation: morphingClock 1s ease-in-out;
-  z-index: 9999;
-}
-
-@keyframes morphingClock {
-  0% { opacity: 0; transform: scale(0.9); }
-  50% { opacity: 1; transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-body.light-mode .time-display {
-  color: var(--text-light);
-  background: rgba(0, 0, 0, 0.05);
-}
-
-/* Mobile view smaller */
-@media (max-width: 768px) {
-  .time-display {
-    font-size: 0.5rem;
-    padding: 2px 8px;
-    top: 5
-px;
-    right: 5px;
-  }
-}
-
+    
     :root {
       --bg-dark: #0a0f3c;
       --bg-light: #ffffff;
@@ -492,7 +455,6 @@ body::-webkit-scrollbar {
 </head>
 <audio id="clickSound" src="/static/click-sound.mp3" preload="auto"></audio>
 <body>
-<div class="time-display" id="timeDisplay"></div>
   <header>
     <h1><span class="star star-left">★</span>WELCOME TO EDIT MASTER AK<span class="star star-right">★</span></h1>
     <div class="header-line"></div>
@@ -603,28 +565,6 @@ updateCursor();
     }
   });
 </script>
-
-<script>
-function updateClock() {
-  const now = new Date();
-  let hours = now.getHours();
-  const minutes = now.getMinutes();
-  const ampm = hours >= 12 ? 'PM' : 'AM';
-  hours = hours % 12 || 12;
-  const formattedTime = `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
-  
-  const timeDisplay = document.getElementById('timeDisplay');
-  if (timeDisplay.innerText !== formattedTime) {
-    timeDisplay.classList.remove('morphingClock');
-    void timeDisplay.offsetWidth; // trigger reflow
-    timeDisplay.classList.add('morphingClock');
-  }
-
-  timeDisplay.innerText = formattedTime;
-}
-
-setInterval(updateClock, 1000);
-updateClock(); // Initial call
 </script>
 </body>
 </html>
