@@ -558,11 +558,12 @@ updateCursor();
     
   const clickSound = document.getElementById('clickSound');
 
-  document.addEventListener('pointerdown', function () {
+  document.addEventListener('click', function () {
     if (clickSound) {
-      clickSound.currentTime = 0;
-      clickSound.play().catch(e => {
-        console.warn('Playback blocked:', e);
+      clickSound.currentTime = 0; // restart sound on every click
+      clickSound.play().catch((e) => {
+        // Required user interaction first (especially on mobile)
+        console.warn("Interaction needed to play sound.");
       });
     }
   });
