@@ -558,11 +558,10 @@ updateCursor();
     
   const clickSound = document.getElementById('clickSound');
 
-  document.addEventListener('click', function () {
+  document.addEventListener('pointerdown', function () {
     if (clickSound) {
-      clickSound.currentTime = 0; // rewind to start
+      clickSound.currentTime = 0;
       clickSound.play().catch(e => {
-        // Autoplay restrictions (usually on first user interaction)
         console.warn('Playback blocked:', e);
       });
     }
