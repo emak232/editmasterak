@@ -77,9 +77,10 @@
     }
 
     @keyframes fadeIn {
-      0% { opacity: 0; transform: translateY(20px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+   }
+
 
     @keyframes fadeOutSmooth {
   from {
@@ -310,8 +311,8 @@
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;
-  animation: revealLeftRight 2.5s ease forwards, fadeOutSmooth 1s ease forwards;
-  animation-delay: 0s, 6s; /* Reveal starts immediately, fade starts after 5s */
+  animation: revealLeftRight 3.0s ease forwards, fadeOutSmooth 1s ease forwards;
+  animation-delay: 0s, 9s; /* Reveal starts immediately, fade starts after 5s */
   border-right: 1px solid transparent;
 }
 
@@ -463,7 +464,7 @@ body::-webkit-scrollbar {
     <p>
   Hi, I'm AK! If you're passionate about watching finely edited videos of Gaming, Cars, AI-based, Music, and some Tech videos, you've come to the right place.<br>
   On my youtube channel, you will find all. Join our community by subscribing and turning on notifications.<br>
-  Thank you.<br><br>
+  Thank you.<br>
   <p>
 • Instagram Id: editmaster.ak232   
   <img src="https://emak232.github.io/editmasterak/icons/instagram.png" alt="Instagram" width="16" height="16"><br>
@@ -585,6 +586,8 @@ updateCursor();
         // Required user interaction first (especially on mobile)
         console.warn("Interaction needed to play sound.");
       });
+  
+  
 
     }
   });
