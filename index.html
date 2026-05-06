@@ -44,9 +44,6 @@
   font-weight: normal;
   font-style: normal;
 }
-</style>
-
-  <style>
 
 .logo-box {
   position: fixed;
@@ -249,46 +246,80 @@ h1 {
       border-radius: 2px;
     }
 
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: -300px;
-      width: 260px;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.95);
-      padding: 100px 20px 30px;
-      border-radius: 0 12px 12px 0;
-      color: #fff;
-      z-index: 1000;
-      transition: left 0.4s ease;
-      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.4);
-    }
 
-    .sidebar.active {
-      left: 0;
-    }
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
 
+  width: 260px;
+  height: 100%;
+
+  /* 🔥 DARK MODE = SOLID BLACK (as you wanted) */
+  background: #0d0d0d;
+
+  border-right: 1px solid rgba(255,255,255,0.08);
+
+  padding: 80px 20px 30px;
+  border-radius: 0 16px 16px 0;
+
+  color: white;
+  z-index: 1000;
+
+  transform: translateX(-100%);
+  transition: transform 0.35s ease;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;  
+  gap: 25px;            
+}
+
+/* Light mode stays glass */
+.light-mode .sidebar {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(14px);
+  border-right: 1px solid rgba(0,0,0,0.1);
+  color: #111;
+}
+
+.sidebar.active {
+  transform: translateX(0);
+}
     .sidebar strong {
-      display: block;
-      margin-bottom: 20px;
-      font-size: 1.2rem;
-    }
+  font-size: 1.3rem;
+  text-align: center;
+  width: 100%;
+  letter-spacing: 1px;
+}
 
-    .toggle-btn {
-      margin-top: -5px;
-      background: #555;
-      color: #fff;
-      padding: 10px 18px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.3s ease;
-    }
+ .toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 
-    .toggle-btn:hover {
-      background: #777;
-    }
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+
+  padding: 12px;
+  width: 100%;
+
+  color: white;
+  font-size: 1rem;
+
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.toggle-btn:hover {
+  background: rgba(255,255,255,0.2);
+  transform: scale(1.03);
+}
 
     .light-mode {
       background: var(--bg-light);
@@ -300,12 +331,7 @@ h1 {
       color: #1c1c1c;
     }
 
-    .light-mode .sidebar {
-      background: rgba(255,255,255,0.95);
-      color: #1c1c1c;
-      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
-    }
-
+    
     .light-mode .menu-icon {
       background: #1c1c1c;
     }
@@ -495,7 +521,72 @@ body::-webkit-scrollbar {
     height: 25px !important;
   }
 }
+
+.theme-toggle {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Track stays centered */
+.toggle-track {
+  width: 90px;
+  height: 38px;
+}
+
+/* Labels aligned perfectly */
+.toggle-labels {
+  width: 90px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.toggle-track {
+  position: relative;
+  width: 90px;
+  height: 38px;
+  border-radius: 30px;
+
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(255,255,255,0.2);
+  transition: all 0.3s ease;
+}
+
+/* light mode track */
+.light-mode .toggle-track {
+  background: rgba(0,0,0,0.08);
+  border: 1px solid rgba(0,0,0,0.15);
+}
+
+
+.toggle-thumb {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+
+  background: linear-gradient(135deg, #ffffff, #dcdcdc);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+
+  transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+}
+
+/* movement */
+.dark-active .toggle-thumb {
+  transform: translateX(50px);
+}
+
   </style>
+
 </head>
 <body>
   <audio id="clickSound" src="https://emak232.github.io/editmasterak/click-sound.mp3" preload="auto"></audio>
@@ -556,11 +647,45 @@ body::-webkit-scrollbar {
   </button>
 
   <div class="sidebar" id="sidebar">
-    <strong>Menu</strong>
-    <button id="toggleModeBtn" class="toggle-btn" onclick="toggleDarkMode()">Toggle Light Mode</button>
+  <strong>Menu</strong>
+
+  <div class="theme-toggle" onclick="toggleDarkMode()">
+    <div class="toggle-track">
+      <div class="toggle-thumb" id="toggleThumb"></div>
+    </div>
+    <div class="toggle-labels">
+      <span>Light</span>
+      <span>Dark</span>
+    </div>
   </div>
 
+</div>
+
   <script>
+
+// 🔥 Auto detect system theme on first load
+(function () {
+  const savedTheme = localStorage.getItem("theme");
+
+  if (savedTheme) {
+    // use saved preference
+    if (savedTheme === "light") {
+      document.body.classList.add("light-mode");
+    } else {
+      document.body.classList.add("dark-active");
+    }
+  } else {
+    // detect system theme
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    if (prefersDark) {
+      document.body.classList.add("dark-active");
+    } else {
+      document.body.classList.add("light-mode");
+    }
+  }
+})();
+
  
   document.addEventListener('click', function(e) {
     const ripple = document.createElement('div');
@@ -575,17 +700,19 @@ body::-webkit-scrollbar {
     setTimeout(() => ripple.remove(), 800);
   });
 
-  function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('active');
-  }
+function toggleDarkMode() {
+  const body = document.body;
 
-  function toggleDarkMode() {
-    const body = document.body;
-    const toggleBtn = document.getElementById('toggleModeBtn');
-    body.classList.toggle('light-mode');
-    toggleBtn.textContent = body.classList.contains('light-mode') ? "Toggle Dark Mode" : "Toggle Light Mode";
-  }
+  body.classList.toggle("light-mode");
+  body.classList.toggle("dark-active");
 
+  // save preference
+  if (body.classList.contains("light-mode")) {
+    localStorage.setItem("theme", "light");
+  } else {
+    localStorage.setItem("theme", "dark");
+  }
+}
   // 🔥 Keyboard Shortcuts: Esc for menu, T for light/dark toggle
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
@@ -607,6 +734,49 @@ body::-webkit-scrollbar {
 
     }
   });
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('active');
+}
+
+// 🔥 Fix initial toggle position on page load
+window.addEventListener("load", () => {
+  const body = document.body;
+
+  if (!body.classList.contains("light-mode")) {
+    body.classList.add("dark-active");
+  }
+});
+
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
+  if (!localStorage.getItem("theme")) {
+    if (e.matches) {
+      document.body.classList.remove("light-mode");
+      document.body.classList.add("dark-active");
+    } else {
+      document.body.classList.add("light-mode");
+      document.body.classList.remove("dark-active");
+    }
+  }
+});
+
+try {
+  const savedTheme = localStorage.getItem("theme");
+
+  if (savedTheme === "light") {
+    document.body.classList.add("light-mode");
+  } else if (savedTheme === "dark") {
+    document.body.classList.add("dark-active");
+  } else {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    prefersDark
+      ? document.body.classList.add("dark-active")
+      : document.body.classList.add("light-mode");
+  }
+} catch (e) {
+  // fallback if storage blocked
+  document.body.classList.add("dark-active");
+}
 
 </script>
 
