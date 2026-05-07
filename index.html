@@ -32,10 +32,7 @@
 <link rel="icon" href="https://emak232.github.io/editmasterak/icons/AK Logo.png">
 
 
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>EDIT MASTER AK</title>
-  <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 
 <style>
 @font-face {
@@ -43,41 +40,6 @@
   src: url('font/Speedy.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
-}
-
-.logo-box {
-  position: fixed;
-  bottom: 15px;
-  left: 15px;
-  width: 62px;
-  height: 62px;
-  border-radius: 18px;
-  background: rgba(255,255,255,0.12);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255,255,255,0.22);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-
-  transition: all 0.35s ease;
-}
-
-.logo-box:hover {
-  transform: scale(1.08);
-}
-
-.logo-box img {
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
-}
-
-.light-mode .logo-box {
-  background: rgba(255,255,255,0.55);
-  border: 1px solid rgba(0,0,0,0.08);
 }
 
     :root {
@@ -530,59 +492,170 @@ body::-webkit-scrollbar {
   gap: 10px;
 }
 
-/* Track stays centered */
-.toggle-track {
-  width: 90px;
-  height: 38px;
-}
-
-/* Labels aligned perfectly */
-.toggle-labels {
-  width: 90px;
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.75rem;
-  opacity: 0.7;
-}
-
 .toggle-track {
   position: relative;
-  width: 90px;
-  height: 38px;
-  border-radius: 30px;
+  width: 92px;
+  height: 42px;
+  border-radius: 999px;
 
   background: rgba(255,255,255,0.12);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 
-  border: 1px solid rgba(255,255,255,0.2);
-  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.18);
+
+  overflow: hidden;
+
+  transition:
+    background 0.45s cubic-bezier(.22,1,.36,1),
+    border-color 0.45s cubic-bezier(.22,1,.36,1),
+    box-shadow 0.45s cubic-bezier(.22,1,.36,1);
+
+  box-shadow:
+    inset 0 1px 2px rgba(255,255,255,0.08),
+    inset 0 -2px 6px rgba(0,0,0,0.18);
 }
 
-/* light mode track */
+/* Light mode */
 .light-mode .toggle-track {
   background: rgba(0,0,0,0.08);
-  border: 1px solid rgba(0,0,0,0.15);
+  border: 1px solid rgba(0,0,0,0.12);
 }
 
+/* iOS active glow */
+.dark-active .toggle-track {
+  background: linear-gradient(135deg, #4d7cff, #7f5cff);
+  box-shadow:
+    0 0 18px rgba(100,120,255,0.35),
+    inset 0 1px 2px rgba(255,255,255,0.18);
+}
 
 .toggle-thumb {
   position: absolute;
-  top: 4px;
-  left: 4px;
+  top: 3px;
+  left: 3px;
 
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
 
-  background: linear-gradient(135deg, #ffffff, #dcdcdc);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255,255,255,1),
+      rgba(240,240,240,1)
+    );
 
-  transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.22),
+    inset 0 1px 1px rgba(255,255,255,0.8);
+
+  transition:
+    transform 0.55s cubic-bezier(.34,1.56,.64,1),
+    background 0.4s ease,
+    box-shadow 0.4s ease;
 }
 
-/* movement */
+/* Smooth elastic movement */
 .dark-active .toggle-thumb {
   transform: translateX(50px);
+}
+
+/* Press effect */
+.theme-toggle:active .toggle-thumb {
+  transform: scale(0.92);
+}
+
+.dark-active .theme-toggle:active .toggle-thumb {
+  transform: translateX(50px) scale(0.92);
+}
+
+/* 🌊 Liquid Morph Theme Transition */
+
+body,
+body::before,
+header,
+.sidebar,
+.social a,
+.toggle-track,
+.toggle-thumb,
+.menu-btn,
+.footer-text,
+.header-line {
+  transition:
+    background 0.9s cubic-bezier(.22,1,.36,1),
+    background-color 0.9s cubic-bezier(.22,1,.36,1),
+    color 0.7s ease,
+    border-color 0.8s ease,
+    box-shadow 0.8s ease,
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(.22,1,.36,1),
+    backdrop-filter 0.8s ease;
+}
+
+/* Smooth liquid fade layer */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+
+  background:
+    radial-gradient(circle at center,
+    rgba(255,255,255,0.08),
+    transparent 70%);
+
+  opacity: 0;
+  transform: scale(1.2);
+
+  transition:
+    opacity 0.8s ease,
+    transform 1s cubic-bezier(.22,1,.36,1);
+}
+
+/* Activate morph animation */
+body.theme-switching::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Ultra smooth text morph */
+h1,
+p,
+.social a,
+.sidebar,
+footer {
+  transition:
+    color 0.7s ease,
+    opacity 0.5s ease,
+    transform 0.7s cubic-bezier(.22,1,.36,1);
+}
+
+/* Tiny smooth scale effect */
+body.theme-switching main {
+  transform: scale(0.995);
+}
+
+main {
+  transition: transform 0.8s cubic-bezier(.22,1,.36,1);
+}
+
+.toggle-labels {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: color 0.4s ease;
+}
+
+/* dark mode text */
+body.dark-active .toggle-labels {
+  color: white;
+}
+
+/* light mode text */
+body.light-mode .toggle-labels {
+  color: black;
 }
 
   </style>
@@ -591,7 +664,7 @@ body::-webkit-scrollbar {
 <body>
   <audio id="clickSound" src="https://emak232.github.io/editmasterak/click-sound.mp3" preload="auto"></audio>
   <header>
-    <h1><span class="star star-left">★</span>EDIT MASTER AK<span class="star star-right">★</span></h1>
+    <h1>EDIT MASTER AK</h1>
     <div class="header-line"></div>
   </header>
   <main>
@@ -654,9 +727,8 @@ body::-webkit-scrollbar {
       <div class="toggle-thumb" id="toggleThumb"></div>
     </div>
     <div class="toggle-labels">
-      <span>Light</span>
-      <span>Dark</span>
-    </div>
+  <span id="themeLabel">Dark Mode</span>
+</div>
   </div>
 
 </div>
@@ -703,16 +775,39 @@ body::-webkit-scrollbar {
 function toggleDarkMode() {
   const body = document.body;
 
+  /* 🌊 liquid morph animation */
+  body.classList.add("theme-switching");
+
+  // switch themes
   body.classList.toggle("light-mode");
   body.classList.toggle("dark-active");
 
-  // save preference
+  // save theme
   if (body.classList.contains("light-mode")) {
     localStorage.setItem("theme", "light");
   } else {
     localStorage.setItem("theme", "dark");
   }
+
+  // update label
+  updateThemeLabel();
+
+  // remove morph effect
+  setTimeout(() => {
+    body.classList.remove("theme-switching");
+  }, 900);
 }
+
+function updateThemeLabel() {
+  const label = document.getElementById("themeLabel");
+
+  if (document.body.classList.contains("light-mode")) {
+    label.textContent = "Light Mode";
+  } else {
+    label.textContent = "Dark Mode";
+  }
+}
+
   // 🔥 Keyboard Shortcuts: Esc for menu, T for light/dark toggle
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
@@ -746,6 +841,8 @@ window.addEventListener("load", () => {
   if (!body.classList.contains("light-mode")) {
     body.classList.add("dark-active");
   }
+
+  updateThemeLabel();
 });
 
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
@@ -779,10 +876,5 @@ try {
 }
 
 </script>
-
-<div class="logo-box">
-  <img src="icons/AK Logo.png" alt="AK Logo">
-</div>
-
 </body>
 </html>
